@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>Docker安装与命令 - Schieh&#39;s Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="前言从18年开始接触docker，之前linux安装那一套现在已经区分为CE、EE版本，安装上也与旧版有所不同，所以总结一下docker的安装与命令使用，方便自己使用。">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker安装与命令">
+<meta property="og:url" content="http://yoursite.com/2019/01/10/docker安装与命令/index.html">
+<meta property="og:site_name" content="Schieh&#39;s Blog">
+<meta property="og:description" content="前言从18年开始接触docker，之前linux安装那一套现在已经区分为CE、EE版本，安装上也与旧版有所不同，所以总结一下docker的安装与命令使用，方便自己使用。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-03-23T08:43:08.553Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker安装与命令">
+<meta name="twitter:description" content="前言从18年开始接触docker，之前linux安装那一套现在已经区分为CE、EE版本，安装上也与旧版有所不同，所以总结一下docker的安装与命令使用，方便自己使用。">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="Docker安装与命令" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="http://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-10-tablet is-10-desktop is-8-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://miro.medium.com/max/542/1*o_bekXjEb8aHFzEA0y5b4Q.png" alt="Docker安装与命令">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-01-10T07:03:39.000Z">2019-01-10</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    14 minutes read (About 2041 words)
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Docker安装与命令
+            
+        </h1>
+        <div class="content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>从18年开始接触docker，之前linux安装那一套现在已经区分为<code>CE</code>、<code>EE</code>版本，安装上也与旧版有所不同，所以总结一下docker的安装与命令使用，方便自己使用。</p>
+<a id="more"></a>
+<h2 id="Docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h2><h3 id="Centos7安装"><a href="#Centos7安装" class="headerlink" title="Centos7安装"></a>Centos7安装</h3><p>目前docker提供两个版本：</p>
+<ul>
+<li>社区版(CE)</li>
+<li>企业版(EE)</li>
+</ul>
+<p>CE版有两个更新渠道：</p>
+<ul>
+<li><strong>Stable</strong> 每个季度为您提供可靠更新</li>
+<li><strong>Edge</strong> 每个月为您提供新功能</li>
+</ul>
+<ol>
+<li><p>卸载旧版本</p>
+ <figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo yum remove docker \</span><br><span class="line">                docker-client \</span><br><span class="line">                docker-client-latest \</span><br><span class="line">                docker-common \</span><br><span class="line">                docker-latest \</span><br><span class="line">                docker-latest-logrotate \</span><br><span class="line">                docker-logrotate \</span><br><span class="line">                docker-selinux \</span><br><span class="line">                docker-engine-selinux \</span><br><span class="line">                docker-engine</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装<code>yum</code>相关依赖包</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加<code>yum</code>软件源</p>
+ <figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 使用国内源</span></span><br><span class="line">sudo yum-config-manager --add-repo https://mirrors.ustc.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="hljs-comment"># 官方原始源https://download.docker.com/linux/centos/docker-ce.repo</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装docker</p>
+ <figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 更新yum软件包索引</span></span><br><span class="line">sudo yum makecache fast</span><br><span class="line"><span class="hljs-comment"># 安装docker-ce</span></span><br><span class="line">sudo yum install docker-ce</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动docker</p>
+ <figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证docker是否正确安装</p>
+ <figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="Docker常用命令"><a href="#Docker常用命令" class="headerlink" title="Docker常用命令"></a>Docker常用命令</h2><h3 id="容器生命周期管理命令："><a href="#容器生命周期管理命令：" class="headerlink" title="容器生命周期管理命令："></a>容器生命周期管理命令：</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># run：运行容器</span></span><br><span class="line">docker run [OPTIONS] IMAGES [COMMAND] [ARG..]</span><br><span class="line">-d 后台运行</span><br><span class="line">-i 交互模式运行</span><br><span class="line">-t 重新分配伪输入终端</span><br><span class="line">--name=<span class="hljs-string">"name"</span> 设置容器名</span><br><span class="line">-e key=value 设置环境变量</span><br><span class="line">--env-file=[] 从指定文件读取环境变量</span><br><span class="line">-p 80:80 端口映射</span><br><span class="line">-m 500M 设置容器使用最大内存,默认不受限</span><br><span class="line">-v /a:/b 宿主与容器文件夹共享映射</span><br><span class="line">--privileged=<span class="hljs-literal">true</span> 容器拥有访问宿主机所有权限</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># start/stop/restart 启动/停止/重启容器</span></span><br><span class="line">docker start/stop/restart [OPTIONS] CONTAINER [CONTAINER...]</span><br><span class="line">docker start/stop/restart $(docker ps -aqf status=exited) 批量重启</span><br><span class="line">docker stop -t int 等待int秒后停止容器，默认延迟10秒后才真正停止容器</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># kill 强制终止容器的运行</span></span><br><span class="line">-s 发送指定系统信号，默认是`KILL`</span><br><span class="line">docker <span class="hljs-built_in">kill</span> -s SIGINT</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># rm 删除容器</span></span><br><span class="line">-f 通过SIGKILL信号强制删除一个运行中的容器</span><br><span class="line">-l 移除容器间的网络连接，而非容器本身</span><br><span class="line">-v 删除与容器关联的卷</span><br><span class="line">docker rm -f CONTAINER</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># pause/unpause 暂停/恢复容器中所有的进程</span></span><br><span class="line">docker pause/unpause CONTAINER</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># create 创建一个新的容器但不启动它，同run命令操作</span></span><br><span class="line">docker create --name mysql mysql</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># exec 在运行的容器中执行命令</span></span><br><span class="line">-d 分离模式：在后台运行</span><br><span class="line">-i 保持STDIN打开</span><br><span class="line">-t 分配一个伪终端</span><br><span class="line">docker <span class="hljs-built_in">exec</span> -it mysql /bin/bash</span><br></pre></td></tr></table></figure>
+<h3 id="容器操作命令"><a href="#容器操作命令" class="headerlink" title="容器操作命令"></a>容器操作命令</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># ps [OPTIONS] 列出容器</span></span><br><span class="line">-a 显示所有容器，包括停止的容器</span><br><span class="line">-f 根据条件过滤显示的内容</span><br><span class="line">--format 指定返回值的模板文件</span><br><span class="line">-l 显示最近创建的容器</span><br><span class="line">-n 列出最近创建的n个容器</span><br><span class="line">--no-trunc 不截断输出，原信息中的命令和id是被剪短的版本</span><br><span class="line">-q 静默模式，只显示容器编号</span><br><span class="line">-s 显示总的文件大小</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># inspect [OPTIONS] CONTAINER|IMAGE.. 获取容器/镜像的元数据</span></span><br><span class="line">-f 指定返回值的模板文件</span><br><span class="line">-s 显示总的文件大小</span><br><span class="line">--<span class="hljs-built_in">type</span> 为指定类型返回json</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># top [OPTIONS] CONTAINER [ps OPTIONS] 容器运行时不一定有/bin/bash终端来交互执行top命令，而且不一定有top命令，可以使用docker top来实现查看container中正在运行的进程</span></span><br><span class="line">docker top mysql</span><br><span class="line"><span class="hljs-comment"># 查看所有运行容器的进程信息</span></span><br><span class="line"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> `docker ps |grep Up|awk <span class="hljs-string">'&#123;print $1&#125;'</span>`;<span class="hljs-keyword">do</span> <span class="hljs-built_in">echo</span> \ &amp;&amp;docker top <span class="hljs-variable">$i</span>;<span class="hljs-keyword">done</span> </span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># attach [OPTIONS] CONTAINER 连接到正在运行中的容器，和exec差不多，但是ctrl + d退出容器会让容器停止，正确退出是ctrl + p + q，还有共享屏幕的功能</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># events [OPTIONS] 获取实时事件，包括容器事件，镜像事件等</span></span><br><span class="line">-f 过滤事件</span><br><span class="line">--since 从指定的时间戳后显示所有事件</span><br><span class="line">--until 流水时间显示到指定的时间为止</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># logs [OPTIONS] CONTAINER 查看容器日志,可以配合grep过滤| grep hello </span></span><br><span class="line">-f 滚动日志</span><br><span class="line">--details 显示额外详细信息</span><br><span class="line">--tail=200 查看最后200行</span><br><span class="line">--since 显示某个时间后的日志，eg 2019-01-02T12:00:00</span><br><span class="line">--until 显示某个时间前的日志，同上</span><br><span class="line">-t 显示时间戳</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># wait [OPTIONS] CONTAINER... 阻塞运行直到容器停止，然后打印它的退出代码</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># export [OPTIONS] CONTAINER 将文件系统作为一个tar归档文件导出到STDOUT</span></span><br><span class="line">-o 将输入内容写入文件</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># port [OPTIONS] CONTAINER [PRIVATE_PORT[/PROTO]] 列出指定的容器的端口映射，或查找将PRIVATE_PORT NAT到面向公众的端口</span></span><br></pre></td></tr></table></figure>
+<h3 id="容器rootfs命令"><a href="#容器rootfs命令" class="headerlink" title="容器rootfs命令"></a>容器rootfs命令</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]] 从容器创建一个新的镜像</span></span><br><span class="line">-a 提交的镜像作者</span><br><span class="line">-c 使用Dockerfile指令来创建镜像</span><br><span class="line">-m 提交时的说明文字</span><br><span class="line">-p 在commit时，将容器暂停</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># cp [OPTIONS] CONTINER:SRC_PATH DEST_PATH|- 容器与主机之间的数据拷贝</span></span><br><span class="line"><span class="hljs-comment"># cp [OPTIONS] SRC_PATH|- CONTINER:DEST_PATH</span></span><br><span class="line">docker cp hostpath container:path</span><br><span class="line">-a 档案模式，复制所有uid/gid信息</span><br><span class="line">-L 保持源目标中的链接</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># diff [OPTIONS] CONTAINER 检查容器里文件结构的更改，是目前容器与镜像的文件比较，有三种追踪变化，A：创建了文件或目录，D：删除了文件或目录，C：修改了文件或目录</span></span><br></pre></td></tr></table></figure>
+<h3 id="镜像仓库命令"><a href="#镜像仓库命令" class="headerlink" title="镜像仓库命令"></a>镜像仓库命令</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># login [OPTIONS] [SERVER] 登陆到一个Docker镜像仓库，默认为Docker Hub</span></span><br><span class="line"><span class="hljs-comment"># logout [OPTIONS] [SERVER] 登出</span></span><br><span class="line">-u 登陆名</span><br><span class="line">-p 密码</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># pull [OPTIONS] NAME[:TAG|@DIGEST]</span></span><br><span class="line">-a 拉取所有tagged镜像</span><br><span class="line">-diable-content-trust 忽略镜像的校验，默认开启</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># push [OPTIONS] NAME[:TAG]</span></span><br><span class="line">--diable-content-trust 忽略镜像的校验，默认开启</span><br><span class="line">docker push myjava:v1 <span class="hljs-comment"># 上传本地镜像到镜像仓库中</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># search [OPTIONS] TERM</span></span><br><span class="line">--automated 只列出 automated build类型的镜像</span><br><span class="line">--no-trunc 显示完整的镜像描述</span><br><span class="line">-s 列出收藏数不小于指定值的镜像</span><br></pre></td></tr></table></figure>
+<h3 id="本地镜像管理命令"><a href="#本地镜像管理命令" class="headerlink" title="本地镜像管理命令"></a>本地镜像管理命令</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># images [OPTIONS] [REPOSITORY[:TAG]]</span></span><br><span class="line">-a 列出本地所有镜像（含中间层镜像，默认过滤中间层镜像）</span><br><span class="line">--digests 显示镜像的摘要</span><br><span class="line">-f 过滤</span><br><span class="line">--format 指定返回值的模板文件</span><br><span class="line">--no-trunc 显示完整的镜像信息</span><br><span class="line">-q 只显示镜像id</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># rmi [OPTIONS] IMAGE... 删除本地多个镜像</span></span><br><span class="line">-f 强制删除</span><br><span class="line">--no-prune 不移除该镜像的过程镜像，默认移除</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># tag [OPTIONS] IMAGE[:TAG] [REPOSITORY/][USERNAME/]NAME[:TAG] 标记本地镜像，将其归入某一仓库</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># build [OPTIONS] PATH | URL |- 使用DOckerfile创建镜像</span></span><br><span class="line">--add-host list 添加ip mapping到host</span><br><span class="line">--build-arg=[] 设置镜像创建时的变量</span><br><span class="line">--cpu-shares 设置cpu使用权重</span><br><span class="line">--cpu-period 限制cpu cfs周期</span><br><span class="line">--cpu-quota 限制cpu cfs配额</span><br><span class="line">--cpuset-cpus 指定使用的cpu id</span><br><span class="line">--cpuset-mems 指定使用的内存id</span><br><span class="line">--<span class="hljs-built_in">disable</span>-content-trust 忽略校验，默认开启</span><br><span class="line">-f 指定要使用的Dockerfile路径</span><br><span class="line">--force-rm 设置镜像过程中删除中间容器</span><br><span class="line">--isolation 使用容器隔离技术</span><br><span class="line">--label=[] 设置镜像使用的元数据</span><br><span class="line">-m 设置内存最大值</span><br><span class="line">--memory-swap 设置Swap的最大值为内存+Swap，<span class="hljs-string">"-1"</span>表示不限Swap</span><br><span class="line">--no-cache 创建镜像的过程不使用缓存</span><br><span class="line">--pull 尝试去更新镜像的新版本</span><br><span class="line">-q 安静模式，成功后只输入镜像id</span><br><span class="line">--rm 设置镜像成功后删除中间容器</span><br><span class="line">--shm-size 设置/dev/shm的大小，默认64MB</span><br><span class="line">--<span class="hljs-built_in">ulimit</span> Ulimit配置</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># history [OPTIONS] IMAGE 查看指定镜像的创建历史</span></span><br><span class="line">-H 以可读的格式打印镜像大小和日期，默认为<span class="hljs-literal">true</span></span><br><span class="line">--no-trunc 显示完成的提交记录</span><br><span class="line">-q 仅列出提交记录id</span><br><span class="line"> </span><br><span class="line"><span class="hljs-comment"># save [OPTIONS] IMAGE... 将指定镜像保持成tar归档文件</span></span><br><span class="line">-o 输出到的文件</span><br><span class="line">docker save -o myjava.tar gsj/myjava:v1</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># import [OPTIONS] file|URL|- [REPOSITORY[:TAG]] 从归档文件中创建镜像</span></span><br><span class="line">-c 应用docker指令创建镜像</span><br><span class="line">-m 提交时的说明文字</span><br></pre></td></tr></table></figure>
+<h3 id="info-version"><a href="#info-version" class="headerlink" title="info/version"></a>info/version</h3><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># info 显示Docker系统信息，包括镜像和容器数</span></span><br><span class="line"><span class="hljs-comment"># version 显示Docker版本信息</span></span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Docker/">Docker</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/12/11/url空格编码变加号-问题/">
+                <span class="level-item">URL空格编码变加号(+)问题</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+                
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    <img class="image is-128x128 has-mb-6" src="/images/avatar.jpg" alt="Your name">
+                    
+                    <p class="is-size-4 is-block">
+                        Your name
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Your title
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Your location</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Category
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        1
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        10
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="http://github.com/ppoffice">
+                Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="http://github.com/ppoffice">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="http://facebook.com">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="http://twitter.com">
+                
+                <i class="fab fa-twitter"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Dribbble" href="http://dribbble.com">
+                
+                <i class="fab fa-dribbble"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+    
+        
+
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            Links
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">https://hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">https://github.com/ppoffice</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Categories
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/技术/">
+            <span class="level-start">
+                <span class="level-item">技术</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Tag Cloud
+        </h3>
+        <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Function/" style="font-size: 10px;">Function</a> <a href="/tags/Gitlab/" style="font-size: 10px;">Gitlab</a> <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/composer/" style="font-size: 10px;">composer</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/php/" style="font-size: 10px;">php</a>
+    </div>
+</div>
+
+    
+    
+        <div class="card card-transparent is-hidden-widescreen">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Recent
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/01/10/docker安装与命令/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://miro.medium.com/max/542/1*o_bekXjEb8aHFzEA0y5b4Q.png" alt="Docker安装与命令">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-10T07:03:39.000Z">2019-01-10</time></div>
+                    <a href="/2019/01/10/docker安装与命令/" class="has-link-black-ter is-size-6">Docker安装与命令</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/12/11/url空格编码变加号-问题/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="URL空格编码变加号(+)问题">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-10T16:00:00.000Z">2018-12-11</time></div>
+                    <a href="/2018/12/11/url空格编码变加号-问题/" class="has-link-black-ter is-size-6">URL空格编码变加号(+)问题</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/12/05/linux部署gitlab/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumb/gitlab.png" alt="linux部署gitlab">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-04T16:00:00.000Z">2018-12-05</time></div>
+                    <a href="/2018/12/05/linux部署gitlab/" class="has-link-black-ter is-size-6">linux部署gitlab</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/12/04/函数式编程/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumb/sj20181204213.png" alt="函数式编程">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-03T16:00:00.000Z">2018-12-04</time></div>
+                    <a href="/2018/12/04/函数式编程/" class="has-link-black-ter is-size-6">函数式编程</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/11/28/git用户名邮箱配置相关/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumb/github-octocat.png" alt="Git用户名邮箱配置相关">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-27T16:00:00.000Z">2018-11-28</time></div>
+                    <a href="/2018/11/28/git用户名邮箱配置相关/" class="has-link-black-ter is-size-6">Git用户名邮箱配置相关</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            Archives
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Tags
+            </h3>
+            <ul class="menu-list">
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Docker/">
+                        <span class="level-start">
+                            <span class="level-item">Docker</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Function/">
+                        <span class="level-start">
+                            <span class="level-item">Function</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Gitlab/">
+                        <span class="level-start">
+                            <span class="level-item">Gitlab</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/HTML/">
+                        <span class="level-start">
+                            <span class="level-item">HTML</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Java/">
+                        <span class="level-start">
+                            <span class="level-item">Java</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">2</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/composer/">
+                        <span class="level-start">
+                            <span class="level-item">composer</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/git/">
+                        <span class="level-start">
+                            <span class="level-item">git</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">2</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/hexo/">
+                        <span class="level-start">
+                            <span class="level-item">hexo</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/js/">
+                        <span class="level-start">
+                            <span class="level-item">js</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/php/">
+                        <span class="level-start">
+                            <span class="level-item">php</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Recent
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/01/10/docker安装与命令/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="https://miro.medium.com/max/542/1*o_bekXjEb8aHFzEA0y5b4Q.png" alt="Docker安装与命令">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-10T07:03:39.000Z">2019-01-10</time></div>
+                    <a href="/2019/01/10/docker安装与命令/" class="has-link-black-ter is-size-6">Docker安装与命令</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/12/11/url空格编码变加号-问题/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="URL空格编码变加号(+)问题">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-10T16:00:00.000Z">2018-12-11</time></div>
+                    <a href="/2018/12/11/url空格编码变加号-问题/" class="has-link-black-ter is-size-6">URL空格编码变加号(+)问题</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/12/05/linux部署gitlab/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumb/gitlab.png" alt="linux部署gitlab">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-04T16:00:00.000Z">2018-12-05</time></div>
+                    <a href="/2018/12/05/linux部署gitlab/" class="has-link-black-ter is-size-6">linux部署gitlab</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/12/04/函数式编程/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumb/sj20181204213.png" alt="函数式编程">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-03T16:00:00.000Z">2018-12-04</time></div>
+                    <a href="/2018/12/04/函数式编程/" class="has-link-black-ter is-size-6">函数式编程</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/11/28/git用户名邮箱配置相关/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumb/github-octocat.png" alt="Git用户名邮箱配置相关">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-27T16:00:00.000Z">2018-11-28</time></div>
+                    <a href="/2018/11/28/git用户名邮箱配置相关/" class="has-link-black-ter is-size-6">Git用户名邮箱配置相关</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/技术/">技术</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            Archives
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/11/">
+                <span class="level-start">
+                    <span class="level-item">November 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Tags
+            </h3>
+            <ul class="menu-list">
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Docker/">
+                        <span class="level-start">
+                            <span class="level-item">Docker</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Function/">
+                        <span class="level-start">
+                            <span class="level-item">Function</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Gitlab/">
+                        <span class="level-start">
+                            <span class="level-item">Gitlab</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/HTML/">
+                        <span class="level-start">
+                            <span class="level-item">HTML</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Java/">
+                        <span class="level-start">
+                            <span class="level-item">Java</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">2</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/composer/">
+                        <span class="level-start">
+                            <span class="level-item">composer</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/git/">
+                        <span class="level-start">
+                            <span class="level-item">git</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">2</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/hexo/">
+                        <span class="level-start">
+                            <span class="level-item">hexo</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/js/">
+                        <span class="level-start">
+                            <span class="level-item">js</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/php/">
+                        <span class="level-start">
+                            <span class="level-item">php</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="Docker安装与命令" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 Schieh&nbsp;
+                </p>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="http://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {matchFontHeight: false},
+        SVG: {matchFontHeight: false},
+        CommonHTML: {matchFontHeight: false}
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
